@@ -1,0 +1,26 @@
+###This is for Magnolia
+
+#Misc -> Loop to rename files with _001. or _002.
+for filename in *fastq.gz;  do mv "$filename" "$(echo "$filename" | sed 's/_001.fastq.gz/.fastq.gz/')"; done
+
+#### trimomatic to remove adapters and trim ends of sequences
+#example file name - MS-MRA-08_S305.R2.paired.fastq.gz / MS-MRA-08_S305.R1.paired.fastq.gz 
+# might want to try this on a few test files to see if it sets up properly
+
+for .R1. in *.R1*; do
+R2=$.R1.//.R1.fastq.gz/.R2.fastq.gz}
+R1p=${.R1.//.fastq.gz/.paired.fastq.gz}
+R1u=${.R1.//.fastq.gz/.unpaired.fastq.gz}
+R2p=${R2//.fastq.gz/.paired.fastq.gz}
+R2u=${R2//.fastq.gz/.unpaired.fastq.gz}
+echo java -jar /software/trimmomatic/0.39/trimmomatic-0.39.jar PE -phred33 $_R1_ $R2 $R1p $R1u $R2p $R2u ILLUMINACLIP:/software/trimmomatic/0.39/adapters/TruSeq3-PE.fa:2:30:10:2:true LEADING:10 TRAILING:10 SLIDINGWINDOW:4:20 MINLEN:40 >> trimmomatic.sh
+done
+
+
+#### Loop to create a slurm script with all paried and unparied fastq files
+for i in *R1.paired.fastq.gz
+do f2=${i//.R1./.R2.}
+f3=${i//R1.paired.fastq.gz/unpaired.fastq.gz}
+f4=${i//.R1.paired.fastq.gz/}
+echo hybpiper assemble -t_dna /projects/p32416/Magnolia/mag_kim_fixed.fasta  -r $i $f2 --unpaired $f3 --prefix $f4 --bwa --run_intronerate >> assemble.sh
+done
