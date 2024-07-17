@@ -1,0 +1,7 @@
+#### 
+for i in *R1.paired.fastq.gz
+do f2=${i//.R1./.R2.}
+f3=${i//R1.paired.fastq.gz/unpaired.fastq.gz}
+f4=${i//.R1.paired.fastq.gz/}
+echo hybpiper assemble -t_dna /projects/p32416/Magnolia/mag_kim.fasta -r $i $f2 --unpaired $f3 --prefix $f4 --bwa --run_intronerate >> assemble.sh
+done
