@@ -24,3 +24,14 @@ f3=${i//R1.paired.fastq.gz/unpaired.fastq.gz}
 f4=${i//.R1.paired.fastq.gz/}
 echo hybpiper assemble -t_dna /projects/p32416/Magnolia/mag_kim_fixed.fasta  -r $i $f2 --unpaired $f3 --prefix $f4 --bwa --run_intronerate >> assemble.sh
 done
+
+###In progress and working
+Started with 504 genes (grep -Fo '>' mag_kim.fasta | wc -l)
+After running fix target file -> 478 genes
+
+NOTE ->>>> 150 genes or more contain interal stop codons...... Consider running assemble with flag to remove internal stop
+--exonerate_skip_hits_with_internal_stop_codons
+
+
+
+
