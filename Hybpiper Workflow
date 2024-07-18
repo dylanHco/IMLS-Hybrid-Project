@@ -32,6 +32,9 @@ After running fix target file -> 478 genes
 NOTE ->>>> 150 genes or more contain interal stop codons...... Consider running assemble with flag to remove internal stop
 --exonerate_skip_hits_with_internal_stop_codons
 
+-Problematic samples-
+macrophylla4390_S139
+fraseri4629_S38 - no genes with reads
 
 
 
