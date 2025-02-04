@@ -1,0 +1,29 @@
+# This is how I took a multi - species alignment fasta files and converted it into VCF format to be used in ADMXITURE.
+# This script assumes you have aligned your MSA files and you have pruned poorly aligned samples. I like to use muscle to align genes.
+#Programs used to generate the input here: 1. trimmoamtic 2. cutadapt 3. hybpiper 4. hybphaser 5. muscle 
+# Once you have aligned fasta files trim them using Clipkit (https://jlsteenwyk.com/ClipKIT/)
+
+
+
+# here i am running smart + gappy and just keeping parsimony informative + constant sites
+clipkit aligned.fasta -m kpic-smart-gap -o example.fasta
+
+# After trimming the gene files, merge them all into one alignment - many ways to do this (AMAS is one way)
+
+#After files are combined I use Snp-sites to make a vcf file (https://github.com/sanger-pathogens/snp-sites)
+snp-sites -v -o example.vcf example.fasta
+
+#Once you have your VCF file you will want to filter it using vcf tools (many ways to do this)
+vcftools --vcf input.vcf --min-alleles 2 --max-alleles 2 --recode --out filtered
+
+# once you are satisfied with how you filtered your vcf need to convert it into ped format using plink and specficially recode for 12
+plink --vcf alleles.recode.vcf  --make-bed --out initial_plink --allow-extra-chr --double-id
+plink --bfile initial_plink --recode12 --out admixture_input --allow-extra-chr --double-id
+
+# I used an admixture wrapper from Danel Portik https://github.com/dportik/admixture-wrapper to run the program
+python3 admixture_wrapper.py -i ~/Jug_hybphaser/Jug_align_trim/clipped/real_het/admixutre/allele.filter --kmin 5 --kmax 10 --reps 10 -t 4 --cv 10
+
+
+
+
+
