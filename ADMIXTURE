@@ -23,6 +23,10 @@ plink --bfile initial_plink --recode12 --out admixture_input --allow-extra-chr -
 # I used an admixture wrapper from Danel Portik https://github.com/dportik/admixture-wrapper to run the program
 python3 admixture_wrapper.py -i ~/Jug_hybphaser/Jug_align_trim/clipped/real_het/admixutre/allele.filter --kmin 5 --kmax 10 --reps 10 -t 4 --cv 10
 
+# To make the input file for plotting in R
+#Note combine .fam file and .q file and check the .txt file for sample names + # of clusters you are testing, below this file should have 9
+paste initial_plink.fam admixture_input.9.3.Q | awk '{print $1, $7, $8, $9, $10, $11, $12, $13, $14, $15}' > admixture_K9B.txt
+
 
 
 
