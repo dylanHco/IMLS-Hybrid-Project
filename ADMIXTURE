@@ -14,7 +14,14 @@ clipkit aligned.fasta -m kpic-smart-gap -o example.fasta
 snp-sites -v -o example.vcf example.fasta
 
 #Once you have your VCF file you will want to filter it using vcf tools (many ways to do this)
+#Method one did not detect hybrid samples in Juglans after using ADMIXTURE
 vcftools --vcf input.vcf --min-alleles 2 --max-alleles 2 --recode --out filtered
+
+#Method two also did not work - got rid of too many snps probably/tried to account for linkage
+vcftools --vcf --vcf alleles.recode.vcf --thin 1000 --out thinned --recode
+
+#Method Three - seems to have worked best so far....
+vcftools --vcf this.vcf --maf 0.05 --recode --out maf_filtered
 
 # once you are satisfied with how you filtered your vcf need to convert it into ped format using plink and specficially recode for 12
 plink --vcf alleles.recode.vcf  --make-bed --out initial_plink --allow-extra-chr --double-id
