@@ -36,5 +36,38 @@ paste initial_plink.fam admixture_input.9.3.Q | awk '{print $1, $7, $8, $9, $10,
 
 
 
+### Below is the R code I used to make the structure plots
+#### Load libraries to make plots
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+
+admix_data <- read.table("admixture_K5.txt", header=FALSE)
+colnames(admix_data) <- c("Sample", "Cluster1", "Cluster2", "Cluster3","Cluster4", "Cluster5")
+
+# Convert to long format
+admix_long <- pivot_longer(admix_data, cols = starts_with("Cluster"), 
+                           names_to = "Cluster", values_to = "Ancestry")
+
+# Identify the dominant cluster for each sample
+sample_order <- admix_long %>%
+  group_by(Sample) %>%
+  slice_max(Ancestry, n = 1, with_ties = FALSE) %>%  # Get the row with the highest ancestry per sample
+  arrange(Cluster, desc(Ancestry)) %>%  # First by cluster, then by ancestry proportion
+  pull(Sample)
+
+# Reorder Sample factor levels
+admix_long$Sample <- factor(admix_long$Sample, levels = sample_order)
+
+# Plot with sorted order
+ggplot(admix_long, aes(x = Sample, y = Ancestry, fill = Cluster)) +
+  geom_bar(stat = "identity", width = 1) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 6)) +
+  labs(title = "ADMIXTURE Plot (Sorted by Cluster)", x = "Samples", y = "Ancestry Proportion") +
+  ggsave("admixture_plotclustersK5.png", width = 20, height = 4, dpi = 300)
+
+
+
 
 
