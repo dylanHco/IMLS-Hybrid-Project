@@ -42,13 +42,18 @@ library(ggplot2)
 library(tidyr)
 library(dplyr)
 
-admix_data <- read.table("admixture_K5.txt", header=FALSE)
-colnames(admix_data) <- c("Sample", "Cluster1", "Cluster2", "Cluster3","Cluster4", "Cluster5")
+admix_data <- read.table("admixture_K6MAF.txt", header=FALSE)
+#colnames(admix_data) <- c("Sample", "Cluster1", "Cluster2", "Cluster3","Cluster4", "Cluster5","Cluster6", "Cluster7", "Cluster8","Cluster9", "Cluster10")
+#colnames(admix_data) <- c("Sample", "Cluster1", "Cluster2", "Cluster3","Cluster4", "Cluster5","Cluster6", "Cluster7", "Cluster8","Cluster9")
+#colnames(admix_data) <- c("Sample", "Cluster1", "Cluster2", "Cluster3","Cluster4", "Cluster5","Cluster6", "Cluster7", "Cluster8")
+#colnames(admix_data) <- c("Sample", "Cluster1", "Cluster2", "Cluster3","Cluster4", "Cluster5","Cluster6", "Cluster7")
+#colnames(admix_data) <- c("Sample", "Microcarpa", "Californica", "Nigra","Hindsii", "Major","Regia")
+colnames(admix_data) <- c("Sample", "Cluster1", "Cluster2", "Cluster3","Cluster4", "Cluster5","Cluster6")
 
+#######PLot by cluster or species
 # Convert to long format
 admix_long <- pivot_longer(admix_data, cols = starts_with("Cluster"), 
                            names_to = "Cluster", values_to = "Ancestry")
-
 # Identify the dominant cluster for each sample
 sample_order <- admix_long %>%
   group_by(Sample) %>%
@@ -59,13 +64,59 @@ sample_order <- admix_long %>%
 # Reorder Sample factor levels
 admix_long$Sample <- factor(admix_long$Sample, levels = sample_order)
 
-# Plot with sorted order
+# Define new cluster names
+cluster_labels <- c("Cluster1" = "Microcarpa", 
+                    "Cluster2" = "Californica", 
+                    "Cluster3" = "Nigra", 
+                    "Cluster4" = "Hindsii", 
+                    "Cluster5" = "Major", 
+                    "Cluster6" = "Regia")
+
+# Plot with updated legend labels
 ggplot(admix_long, aes(x = Sample, y = Ancestry, fill = Cluster)) +
   geom_bar(stat = "identity", width = 1) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 6)) +
-  labs(title = "ADMIXTURE Plot (Sorted by Cluster)", x = "Samples", y = "Ancestry Proportion") +
-  ggsave("admixture_plotclustersK5.png", width = 20, height = 4, dpi = 300)
+  theme_minimal(base_size = 12) +
+  theme(
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA),
+    panel.grid = element_blank(),
+    axis.text.x = element_text(angle = 90, hjust = 1, size = 6, color = "black"),
+    axis.text.y = element_text(color = "black"),
+    axis.ticks = element_line(color = "black")
+  ) +
+  scale_fill_manual(values = c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33"), 
+                    labels = cluster_labels, name = "Cluster") +
+  labs(title = "ADMIXTURE Plot (K=6)", x = "Samples", y = "Ancestry Proportion")#+
+  #ggsave("admixture_plotclustersK6MAFOrderSamples.jpg", width = 20, height = 4, dpi = 300)
+######
+
+
+### order by sample name
+# Convert to long format
+admix_long <- pivot_longer(admix_data, cols = starts_with("Cluster"), 
+                           names_to = "Cluster", values_to = "Ancestry")
+# Order samples alphabetically
+admix_long$Sample <- factor(admix_long$Sample, levels = sort(unique(admix_long$Sample)))
+
+# Plot
+ggplot(admix_long, aes(x = Sample, y = Ancestry, fill = Cluster)) +
+  geom_bar(stat = "identity", width = 1) +
+  theme_minimal(base_size = 12) +
+  theme(
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA),
+    panel.grid = element_blank(),
+    axis.text.x = element_text(angle = 90, hjust = 1, size = 6, color = "black"),
+    axis.text.y = element_text(color = "black"),
+    axis.ticks = element_line(color = "black")
+  ) +
+  scale_fill_manual(values = c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33"), 
+                    labels = cluster_labels, name = "Cluster") +
+  labs(title = "ADMIXTURE Plot (K=6)", x = "Samples", y = "Ancestry Proportion")#+
+#ggsave("admixture_plotclustersK6MAFOrderSamples.jpg", width = 20, height = 4, dpi = 300)
+
+
+
 
 
 
