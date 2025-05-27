@@ -1,0 +1,9 @@
+# Here are a few notes about how I donwloaded genomes from NCBI using the SRA Toolkit
+# I downloaded these genomes to Curie
+
+# Example of a magnolia raw sequence data
+nohup fasterq-dump SRR15412849 2>&1 &
+
+
+# Way to download full genome assembly 
+nohup  datasets download genome accession GCA_041380795.1 --include gff3,rna,cds,protein,genome,seq-report 2>&1 &
