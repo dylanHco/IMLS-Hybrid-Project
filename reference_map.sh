@@ -76,7 +76,7 @@ xargs -n 1 -P $PARALLEL_JOBS -I {} bash -c 'process_sample "$@"' _ {}
 # --------------------
 # Step 5: Joint Genotyping
 # --------------------
-echo "🧬 Joint genotyping..."
+echo "🧬 Joint genotyping...
 
 GVCF_LIST="$OUT_DIR/gvcf/gvcf_list.args"
 ls $OUT_DIR/gvcf/*.g.vcf.gz | awk '{print "-V",$1}' > $GVCF_LIST
@@ -91,6 +91,8 @@ gatk GenotypeGVCFs \
     -V gendb://$OUT_DIR/genomicsdb \
     -O $OUT_DIR/variants.raw.vcf.gz
 
+
+
 # --------------------
 # Step 6: Variant Filtering
 # --------------------
@@ -99,6 +101,6 @@ gatk VariantFiltration \
     -V $OUT_DIR/variants.raw.vcf.gz \
     -O $OUT_DIR/variants.filtered.vcf.gz \
     --filter-expression "QD < 2.0 || FS > 60.0 || MQ < 40.0" \
-    --filter-name "basic_snp_filter"
-
-echo "🎉 Done! Output: $OUT_DIR/variants.filtered.vcf.gz"
+    --filter-name "basic_snp_filter
+    
+    echo "🎉 Done! Filtered VCF: $OUT_DIR/variants.filtered.vcf.gz"
