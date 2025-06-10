@@ -1,0 +1,12 @@
+cd /scratch/dcl9541/Oak_real_deal
+
+# Make sure all VCFs are indexed
+for f in variants_raw_*.vcf.gz; do
+  bcftools index -f "$f"
+done
+
+# Merge them
+bcftools concat -a -Oz -o variants.raw.vcf.gz variants_raw_*.vcf.gz
+
+# Index the merged VCF
+bcftools index -f variants.raw.vcf.gz
