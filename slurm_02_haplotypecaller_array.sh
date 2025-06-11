@@ -9,6 +9,10 @@
 #SBATCH --partition=genomicslong
 #SBATCH --account=b1042
 
+#get sample list
+# ls *_R1_paired.fastq.gz | sed 's/_R1_paired.fastq.gz//' | sort -u > samples.txt
+
+
 set -euo pipefail
 module load bwa/0.7.17 samtools gatk
 
