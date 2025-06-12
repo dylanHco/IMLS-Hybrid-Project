@@ -29,7 +29,8 @@ bcftools concat -Oz -o "$RAW_VCF" $VCF_FILES
 
 # ---- Index the concatenated VCF ----
 echo "Indexing concatenated VCF..."
-bcftools index "$RAW_VCF"
+#bcftools index "$RAW_VCF"
+bcftools index --tbi "$RAW_VCF"
 
 # ---- Apply Variant Filtering ----
 echo "Filtering SNPs..."
