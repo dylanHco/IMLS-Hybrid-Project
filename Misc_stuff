@@ -1,0 +1,3 @@
+# Count the # of SNPs (Variants) in a vcf file  
+bcftools view -H variants.raw.vcf.gz | wc -l
+bcftools view -H variants.filtered.vcf.gz | wc -l
