@@ -5,6 +5,10 @@ bcftools view -H variants.filtered.vcf.gz | wc -l
 # How many sites are in the VCF
 bcftools stats filtered.depth.vcf.gz | grep ^SN | grep "number of records:"
 
+# Subset VCF
+bcftools view -S boyn.txt -Oz -o vcf_subset_boyn.vcf filtered.depth.vcf.gz # With Boy
+bcftools view -S non_boyn.txt -Oz -o vcf_subset_others.vcf filtered.depth.vcf.gz # Without BOY
+
 
 # Filter for Missing data 
 # Only 30% missing data Phred 30 - confident calls, and MAF 0.05
@@ -18,6 +22,30 @@ bcftools view --types snps --min-alleles 2 --max-alleles 2 -O z -o biallelic_snp
 # Depth filtering
 bcftools view  -i 'FORMAT/DP>=5 && INFO/DP>=8 && INFO/DP<=60 && FORMAT/DP<=60' --threads 25 -Oz -o filtered.depth.vcf.gz biallelic_snps.vcf.gz
 # Sites 168259
+
+# Prepare for ADMIture Run this first
+plink --vcf filtered.depth.vcf --double-id --allow-extra-chr --set-missing-var-ids "@:#" --make-bed --out ld_pruned_test	
+
+# More Strict 59387
+plink --bfile ld_pruned_test --indep-pairwise 10 1 0.2  --double-id --allow-extra-chr --set-missing-var-ids @:"#"  --out ld_pruned_test_strict_10	
+# Less Strict
+plink --bfile ld_pruned_test --indep-pairwise 50 5 0.5  --double-id --allow-extra-chr --set-missing-var-ids @:"#"  --out ld_pruned_test_strict	
+
+# every 500 97301 remained
+plink --bfile ld_pruned_test --bp-space 500 --make-bed  --double-id --allow-extra-chr --set-missing-var-ids @:"#" --out ld_pruned_test_thin500bp
+# every 1000 84929
+plink --bfile ld_pruned_test --bp-space 1000 --make-bed  --double-id --allow-extra-chr --set-missing-var-ids @:"#" --out ld_pruned_test_thin1000bp
+
+# only run this if runing the --indep-pairwise command
+plink --bfile ld_pruned_test --double-id --allow-extra-chr --set-missing-var-ids @:"#"  --extract ld_pruned_test_strict_10.prune.in  --make-bed --out ld_10_strict
+
+# Change name
+plink --bfile ld_10_strict	 --recode12 --double-id --allow-extra-chr --set-missing-var-ids @:"#"  --out admixture_ld_10_strict
+
+# to run admixture wrapper
+nohup python3 admixture_wrapper.py -i ~/ADMIXTURE/test2 --kmin 5 --kmax 10 --reps 10 -t 40 --cv 10 > ad2.out 2>&1 &
+nohup python3 admixture_wrapper.py -i ~/vcf/split/linkage/strict/input_strict --kmin 5 --kmax 10 --reps 20 -t 30 --cv 10 > adstrict.out 2>&1 &
+
 
 #Install R packages like this for Linux
 # activate R env first
