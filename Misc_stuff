@@ -1,3 +1,25 @@
 # Count the # of SNPs (Variants) in a vcf file  
 bcftools view -H variants.raw.vcf.gz | wc -l
 bcftools view -H variants.filtered.vcf.gz | wc -l
+
+# How many sites are in the VCF
+bcftools stats filtered.depth.vcf.gz | grep ^SN | grep "number of records:"
+
+
+# Filter for Missing data 
+# Only 30% missing data Phred 30 - confident calls, and MAF 0.05
+bcftools view -i 'F_MISSING<0.7 && QUAL>30 && MAF>=0.05' --threads 15 -Oz -o Oak_maf05.miss70.vcf.gz variants.filtered.vcf.gz
+
+### BCFTOOLS FILTERING GUIDE
+# Filter for Biallelic SNPS
+bcftools view --types snps --min-alleles 2 --max-alleles 2 -O z -o biallelic_snps.vcf.gz --threads 8 Oak_maf05.miss70.vcf.gz
+# Sites 8673605
+
+# Depth filtering
+bcftools view  -i 'FORMAT/DP>=5 && INFO/DP>=8 && INFO/DP<=60 && FORMAT/DP<=60' --threads 25 -Oz -o filtered.depth.vcf.gz biallelic_snps.vcf.gz
+# Sites 168259
+
+#Install R packages like this for Linux
+# activate R env first
+conda install -c conda-forge r-tidyr
+
