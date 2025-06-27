@@ -4,10 +4,16 @@ bcftools view -H variants.filtered.vcf.gz | wc -l
 
 # How many sites are in the VCF
 bcftools stats filtered.depth.vcf.gz | grep ^SN | grep "number of records:"
+Juglans Passed Filter -> 57 728 934
+Oaks Passed Filter -> 82 602 185
 
-# Subset VCF
+# Subset VCF For Oaks
 bcftools view -S boyn.txt -Oz -o vcf_subset_boyn.vcf filtered.depth.vcf.gz # With Boy
 bcftools view -S non_boyn.txt -Oz -o vcf_subset_others.vcf filtered.depth.vcf.gz # Without BOY
+
+
+#Inspect samples to see missing data/sample
+vcftools --gzvcf variants.snps.filtered.pass.vcf.gz --missing-indv
 
 
 # Filter for Missing data 
