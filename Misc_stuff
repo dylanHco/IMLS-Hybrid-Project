@@ -15,6 +15,11 @@ bcftools view -S non_boyn.txt -Oz -o vcf_subset_others.vcf filtered.depth.vcf.gz
 #Inspect samples to see missing data/sample
 vcftools --gzvcf variants.snps.filtered.pass.vcf.gz --missing-indv
 
+#1 nohup vcftools --gzvcf variants.snps.filtered.pass.vcf.gz   --remove-indels --min-alleles 2 --max-alleles 2 --max-missing .2 --minQ 30 --recode --recode-INFO-all --out Jug.variants.step1  2>&1 &
+#Juglans -> 49 120 976
+
+#2nohup vcftools --vcf Jug.variants.step1.recode.vcf  --maf 0.05 --max-missing .5 --recode --recode-INFO-all --out Jug.variants.step2  2>&1 &
+
 
 # Filter for Missing data 
 # Only 30% missing data Phred 30 - confident calls, and MAF 0.05
