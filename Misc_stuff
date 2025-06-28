@@ -27,7 +27,15 @@ vcftools --gzvcf variants.snps.filtered.pass.vcf.gz --missing-indv
 nohup vcftools --vcf Jug.variants.step2.recode.vcf  --mac 2 --minDP 5 --min-meanDP 8 --max-meanDP 60 --maxDP 60 --recode --recode-INFO-all  --out Jug.variants.step3  2>&1 &
 nohup vcftools --vcf Oak.variants.step2.recode.vcf  --mac 2 --minDP 5 --min-meanDP 8 --max-meanDP 60 --maxDP 60 --recode --recode-INFO-all  --out Oak.variants.step3  2>&1 &
 #Juglans 27 127
-#Oaks 
+#Oaks 27 719
+
+# remove samples with more than 75% missing data
+awk '$5 > 0.60 { print $1 }' out.imiss > bad_samples60.txt
+vcftools --vcf Jug.variants.step3.recode.vcf  --remove bad_samples60.txt --recode --recode-INFO-all --out Jug_removed
+#Removed hindsii_373 major_21 major_349 major_381 major_383
+
+
+
 
 # Filter for Missing data 
 # Only 30% missing data Phred 30 - confident calls, and MAF 0.05
