@@ -37,6 +37,13 @@ vcftools --vcf Jug.variants.step3.recode.vcf  --remove bad_samples60.txt --recod
 vcftools --vcf Oak.variants.step3.recode.vcf   --remove bad_samples60.txt --recode --recode-INFO-all --out Oak_removed60
 #188/233
 
+#gather samples from vcf
+bcftools query -l your_file.vcf > samples.txt
+#subset vcf 
+grep -E '^(boyntonii|margarettae|stellata)_' samples.txt > target_samples.txt
+bcftools view -S boyn.txt -Oz -o vcf_subset_boyn.vcf target_samples.txt
+
+
 
 # Filter for Missing data 
 # Only 30% missing data Phred 30 - confident calls, and MAF 0.05
