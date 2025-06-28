@@ -20,7 +20,14 @@ vcftools --gzvcf variants.snps.filtered.pass.vcf.gz --missing-indv
 # Oaks ->   71 512 532
 
 #2 nohup vcftools --vcf Oak.variants.step1.recode.vcf  --maf 0.05 --max-missing .5 --recode --recode-INFO-all --out Oak.variants.step2  2>&1 &
+#Juglans -> 1 954 964
+# Oaks -> 8 507 620
 
+#3 depth and mAC
+nohup vcftools --vcf Jug.variants.step2.recode.vcf  --mac 2 --minDP 5 --min-meanDP 8 --max-meanDP 60 --maxDP 60 --recode --recode-INFO-all  --out Jug.variants.step3  2>&1 &
+nohup vcftools --vcf Oak.variants.step2.recode.vcf  --mac 2 --minDP 5 --min-meanDP 8 --max-meanDP 60 --maxDP 60 --recode --recode-INFO-all  --out Oak.variants.step3  2>&1 &
+#Juglans 27 127
+#Oaks 
 
 # Filter for Missing data 
 # Only 30% missing data Phred 30 - confident calls, and MAF 0.05
