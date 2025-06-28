@@ -34,7 +34,8 @@ awk '$5 > 0.60 { print $1 }' out.imiss > bad_samples60.txt
 vcftools --vcf Jug.variants.step3.recode.vcf  --remove bad_samples60.txt --recode --recode-INFO-all --out Jug_removed
 #Removed hindsii_373 major_21 major_349 major_381 major_383
 
-
+vcftools --vcf Oak.variants.step3.recode.vcf   --remove bad_samples60.txt --recode --recode-INFO-all --out Oak_removed60
+#188/233
 
 
 # Filter for Missing data 
