@@ -77,8 +77,14 @@ plink --bfile ld_pruned_test --double-id --allow-extra-chr --set-missing-var-ids
 # Change name
 plink --bfile ld_10_strict	 --recode12 --double-id --allow-extra-chr --set-missing-var-ids @:"#"  --out admixture_ld_10_strict
 
+#missing genotype work around
+bcftools view -e 'COUNT(GT="mis")=N_SAMPLES' -Oz -o vcf_noallmiss.vcf.gz nonboy_removed.recode.vcf
+plink  --vcf vcf_noallmiss.vcf.gz --double-id --allow-extra-chr --set-missing-var-ids "@:#" --make-bed --out other_init_noallmiss
+plink --bfile other_init_noallmiss --recode12 --double-id --allow-extra-chr --set-missing-var-ids "@:#" --out admixture_input_noboy
+
+
 # to run admixture wrapper
-nohup python3 admixture_wrapper.py -i ~/ADMIXTURE/test2 --kmin 5 --kmax 10 --reps 10 -t 40 --cv 10 > ad2.out 2>&1 &
+nohup python3 admixture_wrapper.py -i ~/vcf/oaks/non_boy/oaks_sub2 --kmin 2 --kmax 10 --reps 10 -t 40 --cv 10 > no_boyoaks.out 2>&1 &
 nohup python3 admixture_wrapper.py -i ~/vcf/split/linkage/strict/input_strict --kmin 5 --kmax 10 --reps 20 -t 30 --cv 10 > adstrict.out 2>&1 &
 
 
