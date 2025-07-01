@@ -23,6 +23,7 @@ vcftools --gzvcf variants.snps.filtered.pass.vcf.gz --missing-indv
 #2 nohup vcftools --vcf Mag.variants.step1.recode.vcf  --maf 0.05 --max-missing .5 --recode --recode-INFO-all --out Mag.variants.step2  2>&1 &
 #Juglans -> 1 954 964
 # Oaks -> 8 507 620
+# Magnolia -> 2 014 670
 
 #3 depth and mAC
 nohup vcftools --vcf Jug.variants.step2.recode.vcf  --mac 2 --minDP 5 --min-meanDP 8 --max-meanDP 60 --maxDP 60 --recode --recode-INFO-all  --out Jug.variants.step3  2>&1 &
