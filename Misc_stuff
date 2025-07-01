@@ -18,8 +18,9 @@ vcftools --gzvcf variants.snps.filtered.pass.vcf.gz --missing-indv
 #1 nohup vcftools --gzvcf variants.snps.filtered.pass.vcf.gz   --remove-indels --min-alleles 2 --max-alleles 2 --max-missing .2 --minQ 30 --recode --recode-INFO-all --out Jug.variants.step1  2>&1 &
 #Juglans -> 49 120 976
 # Oaks ->   71 512 532
+# Magnolia -> 98 364 835
 
-#2 nohup vcftools --vcf Oak.variants.step1.recode.vcf  --maf 0.05 --max-missing .5 --recode --recode-INFO-all --out Oak.variants.step2  2>&1 &
+#2 nohup vcftools --vcf Mag.variants.step1.recode.vcf  --maf 0.05 --max-missing .5 --recode --recode-INFO-all --out Mag.variants.step2  2>&1 &
 #Juglans -> 1 954 964
 # Oaks -> 8 507 620
 
