@@ -30,14 +30,19 @@ nohup vcftools --vcf Jug.variants.step2.recode.vcf  --mac 2 --minDP 5 --min-mean
 nohup vcftools --vcf Mag.variants.step2.recode.vcf  --mac 2 --minDP 5 --min-meanDP 8 --max-meanDP 60 --maxDP 60 --recode --recode-INFO-all  --out Mag.variants.step3  2>&1 &
 #Juglans 27 127
 #Oaks 27 719
+# Magnolia 33 172
 
-# remove samples with more than 75% missing data
+# remove samples with more than 60% missing data
 awk '$5 > 0.60 { print $1 }' out.imiss > bad_samples60.txt
 vcftools --vcf Jug.variants.step3.recode.vcf  --remove bad_samples60.txt --recode --recode-INFO-all --out Jug_removed
+#Magnolia removed 84 samples with more than 60% missing data
 #Removed hindsii_373 major_21 major_349 major_381 major_383
 
 vcftools --vcf Oak.variants.step3.recode.vcf   --remove bad_samples60.txt --recode --recode-INFO-all --out Oak_removed60
 #188/233
+
+vcftools --vcf Mag.variants.step3.recode.vcf --remove bad_samples60.txt --recode --recode-INFO-all --out Mag_removed60
+#187/271
 
 #gather samples from vcf
 bcftools query -l your_file.vcf > samples.txt
