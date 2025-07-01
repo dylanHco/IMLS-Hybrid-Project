@@ -27,7 +27,7 @@ vcftools --gzvcf variants.snps.filtered.pass.vcf.gz --missing-indv
 
 #3 depth and mAC
 nohup vcftools --vcf Jug.variants.step2.recode.vcf  --mac 2 --minDP 5 --min-meanDP 8 --max-meanDP 60 --maxDP 60 --recode --recode-INFO-all  --out Jug.variants.step3  2>&1 &
-nohup vcftools --vcf Oak.variants.step2.recode.vcf  --mac 2 --minDP 5 --min-meanDP 8 --max-meanDP 60 --maxDP 60 --recode --recode-INFO-all  --out Oak.variants.step3  2>&1 &
+nohup vcftools --vcf Mag.variants.step2.recode.vcf  --mac 2 --minDP 5 --min-meanDP 8 --max-meanDP 60 --maxDP 60 --recode --recode-INFO-all  --out Mag.variants.step3  2>&1 &
 #Juglans 27 127
 #Oaks 27 719
 
