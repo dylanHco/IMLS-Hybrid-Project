@@ -6,6 +6,8 @@ library(tidyverse)
 # Set working directory
 setwd("~/Desktop/Oaks_working_folder/R_Oaks")
 
+#paste initial_plink.fam admixture_input.9.3.Q | awk '{print $1, $7, $8, $9, $10, $11, $12, $13, $14, $15}' > admixture_K9B.txt
+
 #Input the data
 admix_data <- read.table("Oak_AD_6.txt", header=FALSE)
 
