@@ -48,7 +48,7 @@ vcftools --vcf Mag.variants.step3.recode.vcf --remove bad_samples60.txt --recode
 bcftools query -l your_file.vcf > samples.txt
 #subset vcf 
 grep -E '^(boyntonii|margarettae|stellata)_' samples.txt > target_samples.txt
-bcftools view -S boyn.txt -Oz -o vcf_subset_boyn.vcf target_samples.txt
+bcftools view -S target_samples.txt -Oz -o vcf_subset_boyn.vcf your_file.vcf
 
 
 
