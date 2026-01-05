@@ -1,0 +1,2 @@
+#### Changing names of MS to Stellata and MZ to Zenii
+sed -E 's/\bMS-([A-Za-z0-9_.-]+)/Stellata-\1/g; s/\bMZ([A-Za-z0-9_.-]+)/Zenii\1/g' Magnolia_astral_pre.tre > new_named2_input_astral.tre
